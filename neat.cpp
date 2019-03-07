@@ -7,14 +7,6 @@
 
 using namespace std;
 
-struct CostIndex {
-	int cost;
-	int index;
-};
-
-struct CostIndex *getTotalCost(int , vector<struct CostIndex *> *);
-int 			  getLineCost( int, int, vector<string> * );
-
 const int M = 10;
 
 int main(int argc, char** argv) {
