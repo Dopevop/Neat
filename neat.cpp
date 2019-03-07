@@ -13,12 +13,10 @@ struct CostIndex *getTotalCost( int );
 
 int main(int argc, char** argv) {
 
-	ifstream       fin;
-	string         thisWord;
-	vector<int>    totalCost; /* Holds the total cost of arranging words [0,i] */
-	vector<int>    lineStart; /* Holds the index of the word starting the i-th word's line */
-	/* vector<struct CostIndex> CI; */
-	vector<string> words;	  /* Holds the words read from the file */
+	ifstream       				fin;
+	string         				thisWord;
+	vector<struct CostIndex *>	CI;
+	vector<string> 				words;	
 
 	/* Check that a file name has been passed */
 	if(argc != 2){
@@ -40,13 +38,13 @@ int main(int argc, char** argv) {
 
 		/* Calculate T(0,i) and k, store in totalCost and lineStart */
 		CostIndex *ci = getTotalCost( words.size() );
-		totalCost.push_back(ci->cost);
-		lineStart.push_back(ci->index);
+		CI.push_back(ci);
+		CI.push_back(ci);
 	}
 
-	/* Print all the words just because */
-	for(int i=0; i<words.size(); i++) {
-		cout << words[i] << endl;
+	/* Print all costs and indices stored in CI */
+	for(int i=0; i<CI.size(); i++) {
+		cout << CI[i]->cost << CI[i]->index << endl;
 	}
 
 	fin.close();
