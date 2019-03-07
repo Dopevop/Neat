@@ -1,2 +1,2 @@
 neat: neat.cpp
-	g++ -o neat neat.cpp
+	g++ -o bin/neat neat.cpp
