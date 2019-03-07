@@ -10,17 +10,17 @@ using namespace std;
 const int M = 10;
 
 int main(int argc, char** argv) {
-	ifstream       				fin;
-	string         				str;
-	vector<string> 				words;	
-	vector<struct CostIndex *>	CIVector;
+	ifstream		fin;
+	string			str;
+	vector<string>	words;	
+	vector<int>		costs;
+	vector<int>		index;
 
-	/* Check that a file name has been passed */
+	/* Open File if it has been passed correctly */
 	if(argc != 2){
 		cerr << "Usage: " << argv[0] << " <file>" << endl;;
 		exit(1);
 	} else {
-		/* Open the file for reading */
 		fin.open(argv[1]);
 		if( fin.fail() ){
 			cerr << "Could not open " << argv[1] << endl;
