@@ -5,7 +5,13 @@
 using namespace std;
 
 int main(int argc, char** argv) {
-	ifstream fin;
+
+	ifstream       fin;
+	int            wordsRead = 0;
+	string         thisWord;
+	vector<int>    totalCost; /* Holds the total cost of arranging words [0,i] */
+	vector<int>    lineStart; /* Holds the index of the word starting the i-th word's line */
+	vector<string> words;	  /* Holds the words read from the file */
 
 	/* Check that a file name has been passed */
 	if(argc != 2){
@@ -20,11 +26,15 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	vector<int> T;
-	vector<int> k;
-	
+	/* Read all words from input file */
+	while( fin >> thisWord ) {
+		words.push_back(thisWord);
+	}
 
-	T.push_back(5);
+	for(int i=0; i<5; i++) {
+		cout << words[i] << endl;
+	}
+
 
 
 	fin.close();
