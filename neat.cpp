@@ -53,7 +53,10 @@ int main(int argc, char** argv) {
 }
 
 /* Returns the minimized cost for arranging words 0 through i in lines of max width M */
-/* Assumes that the costs have already been determined up to words 0 through i-1 */
+/* Assumes that the costs have already been determined up to words 0 through i-1      */
+/* 			{ 0											if i > j                      */
+/* T(i,j) = { C(i,j)									if i = j                      */
+/* 			{ min( 0<=k<=j ){ T(i, k-1) + C(k, j) }		otherwise                     */
 struct CostIndex *getTotalCost(int i) {
 	struct CostIndex *p = (struct CostIndex *) malloc(sizeof(struct CostIndex));
 	p->cost = 0;
