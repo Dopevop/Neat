@@ -3,3 +3,6 @@ tags
 
 # Ignore binary files
 bin/*
+
+# Ignore all text files
+*.txt
