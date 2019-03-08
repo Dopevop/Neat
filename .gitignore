@@ -1,2 +1,5 @@
 # Ignore the ctags generated tags file
 tags
+
+# Ignore binary files
+bin/*
