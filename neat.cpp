@@ -2,6 +2,8 @@
 #include <vector>
 #include <fstream>
 #include <cstdlib>
+#include <iomanip>
+
 
 #define INF 999999999
 
@@ -9,12 +11,16 @@ using namespace std;
 
 const int M = 10;
 
+void updateWCI(string, vector<string>&, vector<int>&, vector<int>&);
+int  getLineCost(int, int, vector<string> *);
+int  getCost(int, vector<int> &);
+
 int main(int argc, char** argv) {
 	ifstream		fin;
 	string			str;
 	vector<string>	words;	
 	vector<int>		costs;
-	vector<int>		index;
+	vector<int>		indices;
 
 	/* Open File if it has been passed correctly */
 	if(argc != 2){
@@ -30,17 +36,13 @@ int main(int argc, char** argv) {
 
 	/* Read all words from input file */
 	while( fin >> str ) {
-		/* Add word to words vector */
-		words.push_back(str);
-
-		/* Calculate T(0,i) and k, store in totalCost and lineStart */
-		CostIndex *ci = getTotalCost( words.size(), &CIVector );
-		CIVector.push_back(ci);
+		updateWCI(str, words, costs, indices);
 	}
 
-	/* Print cost of putting words 0->k 0<=k<=n on a line */
-	for(int k=0; k<words.size(); k++) {
-		cout << "C(0, " << k << "): " << getLineCost(0, k, &words) << endl;
+	for(int i=0; i<words.size(); i++) {
+		cout << setw(2) << i << setw(10) << words[i];
+		cout << " Cost:" << setw(4) << getCost(i, costs);
+		cout << " Index: " << indices[i] << endl;
 	}
 
 	fin.close();
@@ -48,17 +50,56 @@ int main(int argc, char** argv) {
 	return 0;
 }
 
-/* 			{ 0											if i > j                      */
+/* 			{ 0											if j < i                      */
 /* T(i,j) = { C(i,j)									if i = j                      */
 /* 			{ min( 0<=k<=j ){ T(i, k-1) + C(k, j) }		otherwise                     */
 /* Returns the minimized cost for arranging words 0 through i in lines of max width M */
 /* Assumes that the costs have already been determined up to words 0 through i-1      */
-/* And these costs are stored along with the corresponding indices in currCI 		  */
-struct CostIndex *getTotalCost(int i, vector<struct CostIndex *> *CIVector) {
-	struct CostIndex *p = (struct CostIndex *) malloc(sizeof(struct CostIndex));
-	p->cost = 0;
-	p->index = 0;
-	return p;
+void updateWCI(string newWord, vector<string>& words, vector<int>& costs, vector<int>& indices) {
+	int i, j, prevTotal, thisTotal, newLineCost;
+
+	words.push_back(newWord);
+	if(words.size() == 1) {
+		// adding first word to words[]
+		i = j = 0; 
+		costs.push_back(getLineCost(i, j, &words));
+		indices.push_back(i);
+	} else {
+		// Check if newWord fits on last line
+		i = indices.back();
+		j = words.size() - 1;
+		newLineCost = getLineCost(i, j, &words);
+		if(newLineCost != INF) { 
+			// newWord fits 
+			prevTotal = getCost(i-1, costs);
+			thisTotal = prevTotal + newLineCost;
+			costs.push_back(thisTotal);
+			indices.push_back(i);
+		} else {
+			i = j;
+			int minK, thisT;
+			int minT = INF;
+			while( (newLineCost = getLineCost(i, j, &words)) != INF ) {
+				thisT = getCost(i-1, costs) + newLineCost;
+				if( thisT < minT ){
+					minT = thisT;
+					minK = i;
+				}
+				i--;
+			}
+			costs.push_back(minT);
+			indices.push_back(minK);
+		}
+	}
+}
+
+// A wrapper function to handle costs[i] when i < 0
+int getCost(int index, vector<int> &costs){
+	if(index < 0) {
+		return 0;
+	} else {
+		return (costs)[index];
+	}
 }
 
 /* 			{ inf       if E(i,j) < 0                                 */
