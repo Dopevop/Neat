@@ -9,7 +9,7 @@
 
 using namespace std;
 
-const int M = 10;
+int M = 10;
 
 void updateWCI(string, vector<string>&, vector<int>&, vector<int>&, bool);
 int  lineCost(int, int, vector<string> &);
@@ -26,8 +26,8 @@ int main(int argc, char** argv) {
 	vector<int>		altI;
 
 	/* Open File if it has been passed correctly */
-	if(argc != 2){
-		cerr << "Usage: " << argv[0] << " <file>" << endl;;
+	if(argc < 2 || argc > 3){
+		cerr << "Usage: " << argv[0] << " <file> [max width]" << endl;;
 		exit(1);
 	} else {
 		fin.open(argv[1]);
@@ -35,6 +35,8 @@ int main(int argc, char** argv) {
 			cerr << "Could not open " << argv[1] << endl;
 			exit(1);
 		}
+		if(argc == 3)
+			M = stoi( string(argv[2]) );
 	}
 
 	/* Read words and build up T, I */
