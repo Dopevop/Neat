@@ -20,8 +20,8 @@ int main(int argc, char** argv) {
 	ifstream		fin;
 	string			str;
 	vector<string>	W;	
-	vector<int>		T; // Total up to T[i], i != n
-	vector<int>		I; 
+	vector<int>		T;    // Total up to T[i], i != n
+	vector<int>		I;
 	vector<int>		altT; // Total up to T[i], i == n
 	vector<int>		altI;
 	list<string> 	solution;
