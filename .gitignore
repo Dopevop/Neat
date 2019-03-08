@@ -6,3 +6,7 @@ bin/*
 
 # Ignore all text files
 *.txt
+
+makefile
+
+common/*
