@@ -11,7 +11,7 @@ using namespace std;
 
 const int M = 10;
 
-void updateWCI(string, vector<string>&, vector<int>&, vector<int>&);
+void updateWCI(string, vector<string>&, vector<int>&, vector<int>&, bool);
 int  lineCost(int, int, vector<string> &);
 int  getCost(int, vector<int> &);
 void printWTI(vector<string>& W, vector<int>& T, vector<int>& I);
@@ -37,14 +37,19 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	/* Read words and build up T, I, altT, altI */
+	/* Read words and build up T, I */
 	char ch;
 	while( fin >> str ) {
-		updateWCI(str, W, T, I);
+		updateWCI(str, W, T, I, false);
 	}
 
+	/* Redo the last word, knowing it will be on last line */
+	W.pop_back();
+	T.pop_back();
+	I.pop_back();
+	updateWCI(str, W, T, I, true);
+	
 	printWTI(W, T, I);
-
 
 	fin.close();
 	
@@ -59,17 +64,26 @@ void printWTI(vector<string>& W, vector<int>& T, vector<int>& I) {
 }
 
 /* Calculates T(0,i) where i is index of word added to words[] */
-void updateWCI(string word, vector<string>& W, vector<int>& T, vector<int>& I) { 
+void updateWCI(string word, vector<string>& W, vector<int>& T, vector<int>& I, bool last) { 
 	int i, j, nlc, minK, minT, thisT;
 	W.push_back(word);
 	if(W.size() == 1) {
-		T.push_back(lineCost(0, 0, W));
-		I.push_back(0);
+		if(last){
+			T.push_back(0);
+			T.push_back(0);
+		} else {
+			T.push_back(lineCost(0, 0, W));
+			I.push_back(0);
+		}
 	} else {
 		i = j = W.size() - 1;
 		minT = INF;
 		while( (nlc = lineCost(i, j, W)) != INF ) {
-			thisT = getCost(i-1, T) + nlc; 
+			if(last){
+				thisT = getCost(i-1, T);
+			} else {
+				thisT = getCost(i-1, T) + nlc; 
+			}
 			if( thisT < minT ){
 				minT = thisT;
 				minK = i;
