@@ -3,7 +3,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <iomanip>
-
+#include <list>
 
 #define INF 999999999
 
@@ -24,6 +24,8 @@ int main(int argc, char** argv) {
 	vector<int>		I; 
 	vector<int>		altT; // Total up to T[i], i == n
 	vector<int>		altI;
+	list<string> 	solution;
+	int 			cost;
 
 	/* Open File if it has been passed correctly */
 	if(argc < 2 || argc > 3){
@@ -51,7 +53,24 @@ int main(int argc, char** argv) {
 	I.pop_back();
 	updateWCI(str, W, T, I, true);
 	
-	printWTI(W, T, I);
+	/* Construct list of numbers in reverse, each number is how many words to print before a \n */
+	cost = T.back();
+	int nextBreak = I.back();
+	list<string>::iterator lit = solution.begin();
+	for(int i = W.size()-1; i>=0; i--){
+		lit = solution.insert(lit, W[i]);
+		if(i == nextBreak && i != 0){
+			lit = solution.insert(lit, "\n");
+			nextBreak = I[i-1];
+		}
+	}
+	
+	/* print out the list of words with newlines in place */
+	for(; lit != solution.end(); ++lit) {
+		cout<<( *lit );
+		if(*lit != "\n") 
+			cout<<" ";
+	}
 
 	fin.close();
 	
