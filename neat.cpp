@@ -12,15 +12,17 @@ using namespace std;
 const int M = 10;
 
 void updateWCI(string, vector<string>&, vector<int>&, vector<int>&);
-int  getLineCost(int, int, vector<string> &);
+int  lineCost(int, int, vector<string> &);
 int  getCost(int, vector<int> &);
 
 int main(int argc, char** argv) {
 	ifstream		fin;
 	string			str;
-	vector<string>	words;	
-	vector<int>		costs;
-	vector<int>		indices;
+	vector<string>	W;	
+	vector<int>		T; // Total up to T[i], i != n
+	vector<int>		I; 
+	vector<int>		altT; // Total up to T[i], i == n
+	vector<int>		altI;
 
 	/* Open File if it has been passed correctly */
 	if(argc != 2){
@@ -34,15 +36,16 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	/* Read all words from input file */
+	/* Read words and build up T, I, altT, altI */
+	char ch;
 	while( fin >> str ) {
-		updateWCI(str, words, costs, indices);
+		updateWCI(str, W, T, I);
 	}
 
-	for(int i=0; i<words.size(); i++) {
-		cout << setw(2) << i << setw(10) << words[i];
-		cout << " Cost:" << setw(4) << getCost(i, costs);
-		cout << " Index: " << indices[i] << endl;
+	for(int i=0; i<W.size(); i++) {
+		cout << setw(2) << i << setw(10) << W[i];
+		cout << " Cost:" << setw(4) << getCost(i, T);
+		cout << " Index: " << I[i] << endl;
 	}
 
 	fin.close();
@@ -50,28 +53,26 @@ int main(int argc, char** argv) {
 	return 0;
 }
 
-/* Calculates T(0,i) where i is index of newWord added to words[] */
-void updateWCI(string newWord, vector<string>& words, vector<int>& costs, vector<int>& indices) {
-	int i, j, newLineCost, minK, minT, thisT;
-	words.push_back(newWord);
-	if(words.size() == 1) {
-		i = j = 0; 
-		costs.push_back(getLineCost(i, j, words));
-		indices.push_back(i);
+/* Calculates T(0,i) where i is index of word added to words[] */
+void updateWCI(string word, vector<string>& W, vector<int>& T, vector<int>& I) { 
+	int i, j, nlc, minK, minT, thisT;
+	W.push_back(word);
+	if(W.size() == 1) {
+		T.push_back(lineCost(0, 0, W));
+		I.push_back(0);
 	} else {
-		j = words.size() - 1;
-		i = j;
+		i = j = W.size() - 1;
 		minT = INF;
-		while( (newLineCost = getLineCost(i, j, words)) != INF ) {
-			thisT = getCost(i-1, costs); // Don't add last line to cost
+		while( (nlc = lineCost(i, j, W)) != INF ) {
+			thisT = getCost(i-1, T) + nlc; 
 			if( thisT < minT ){
 				minT = thisT;
 				minK = i;
 			}
 			i--;
 		}
-		costs.push_back(minT);
-		indices.push_back(minK);
+		T.push_back(minT);
+		I.push_back(minK);
 	}
 }
 
@@ -86,14 +87,14 @@ int getCost(int index, vector<int> &costs){
 
 /* Returns cost of words [i,j] from words on a line together */
 /* Words must contain at least j+1 entries and i<=j          */
-int getLineCost(int i, int j, vector<string> &words){	
+int lineCost(int i, int j, vector<string> &W){	
 	int extra;
-	if(words.size() < j+1 || i > j){    // Invalid indices
-		return -1;
+	if(W.size() < j+1 || i > j || i < 0){    // Invalid indices
+		return INF;
 	} else {                            // Calculate E(i,j)
 		extra = M - (j - i);
 		for(int k=i; k<=j; k++) {
-			extra -= words[k].length();
+			extra -= W[k].length();
 		}
 	}
 	if(extra < 0) {                     // Words don't fit on line
