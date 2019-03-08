@@ -9,19 +9,21 @@
 
 using namespace std;
 
+typedef  unsigned long long int ulli;
+
 int M = 60;
 
-void updateWTI(string, vector<string>&, vector<int>&, vector<int>&, bool);
+void updateWTI(string, vector<string>&, vector<ulli>&, vector<int>&, bool);
 int  lineCost(int, int, vector<string> &);
-int  getCost(int, vector<int> &);
-void printWTI(vector<string>& W, vector<int>& T, vector<int>& I);
+int  getCost(int, vector<ulli> &);
+void printWTI(vector<string>& W, vector<ulli>& T, vector<int>& I);
 
 int main(int argc, char** argv) {
 	ifstream		fin;
 	ofstream		fout;
 	string			str;
 	vector<string>	W;	
-	vector<int>		T;    // Total up to T[i], i != n
+	vector<ulli>		T;    // Total up to T[i], i != n
 	vector<int>		I;
 	list<string> 	solution;
 	int 			cost;
@@ -72,7 +74,7 @@ int main(int argc, char** argv) {
 	fout << cost << "\n";
 	for(; lit != solution.end(); ++lit) {
 		fout<<( *lit );
-		if(*lit != "\n") 
+		if( *lit != "\n" ) 
 			fout<<" ";
 	}
 	fout << endl;
@@ -83,7 +85,7 @@ int main(int argc, char** argv) {
 	return 0;
 }
 
-void printWTI(vector<string>& W, vector<int>& T, vector<int>& I) {
+void printWTI(vector<string>& W, vector<ulli>& T, vector<int>& I) {
 	for(int i=0; i<W.size(); i++) {
 		cout<<setw(2)<<i<<":"<<setw(9)<<W[i]<<" T:"<<setw(3)<<T[i];
 		cout<<" I:"<<setw(1)<<I[i]<<endl;
@@ -91,21 +93,21 @@ void printWTI(vector<string>& W, vector<int>& T, vector<int>& I) {
 }
 
 /* Calculates T(0,i) where i is index of word added to words[] */
-void updateWTI(string word, vector<string>& W, vector<int>& T, vector<int>& I, bool last) { 
-	int i, j, nlc, minK, minT, thisT;
-	W.push_back(word);
-	if(W.size() == 1) {
+void updateWTI(string word, vector<string>& W, vector<ulli>& T, vector<int>& I, bool last) { 
+	int i, j, nlc, minK, minT, thisT; // Constant
+	W.push_back(word); // Constant
+	if(W.size() == 1) { // Constant
 		if(last){
-			T.push_back(0);
-			T.push_back(0);
+			T.push_back(0); // Constant
+			T.push_back(0); // Constant
 		} else {
-			T.push_back(lineCost(0, 0, W));
-			I.push_back(0);
+			T.push_back(lineCost(0, 0, W)); // ???
+			I.push_back(0); // Constant
 		}
 	} else {
-		i = j = W.size() - 1;
-		minT = INF;
-		while( (nlc = lineCost(i, j, W)) != INF ) {
+		i = j = W.size() - 1; // Constant
+		minT = INF; // Constant
+		while( (nlc = lineCost(i, j, W)) != INF ) { // Depends on W and M
 			if(last){
 				thisT = getCost(i-1, T);
 			} else {
@@ -123,7 +125,7 @@ void updateWTI(string word, vector<string>& W, vector<int>& T, vector<int>& I, b
 }
 
 // A wrapper function to handle costs[i] when i < 0
-int getCost(int index, vector<int> &costs){
+int getCost(int index, vector<ulli> &costs){
 	if(index < 0) {
 		return 0;
 	} else {
