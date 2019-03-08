@@ -11,7 +11,7 @@ using namespace std;
 
 int M = 60;
 
-void updateWCI(string, vector<string>&, vector<int>&, vector<int>&, bool);
+void updateWTI(string, vector<string>&, vector<int>&, vector<int>&, bool);
 int  lineCost(int, int, vector<string> &);
 int  getCost(int, vector<int> &);
 void printWTI(vector<string>& W, vector<int>& T, vector<int>& I);
@@ -43,19 +43,18 @@ int main(int argc, char** argv) {
 		}
 		if(argc == 3)
 			sscanf(argv[2], "%d", &M);
-			/* M = stoi( string(argv[2]) ); */
 	}
 
 	/* Read words and build up T, I */
 	while( fin >> str ) {
-		updateWCI(str, W, T, I, false);
+		updateWTI(str, W, T, I, false);
 	}
 
 	/* Redo the last word, knowing it will be on last line */
 	W.pop_back();
 	T.pop_back();
 	I.pop_back();
-	updateWCI(str, W, T, I, true);
+	updateWTI(str, W, T, I, true);
 	
 	/* Construct list of numbers in reverse, each number is how many words to print before a \n */
 	cost = T.back();
@@ -79,6 +78,7 @@ int main(int argc, char** argv) {
 	fout << endl;
 
 	fin.close();
+	fout.close();
 	
 	return 0;
 }
@@ -91,7 +91,7 @@ void printWTI(vector<string>& W, vector<int>& T, vector<int>& I) {
 }
 
 /* Calculates T(0,i) where i is index of word added to words[] */
-void updateWCI(string word, vector<string>& W, vector<int>& T, vector<int>& I, bool last) { 
+void updateWTI(string word, vector<string>& W, vector<int>& T, vector<int>& I, bool last) { 
 	int i, j, nlc, minK, minT, thisT;
 	W.push_back(word);
 	if(W.size() == 1) {
