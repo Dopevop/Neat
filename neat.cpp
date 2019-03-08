@@ -14,6 +14,7 @@ const int M = 10;
 void updateWCI(string, vector<string>&, vector<int>&, vector<int>&);
 int  lineCost(int, int, vector<string> &);
 int  getCost(int, vector<int> &);
+void printWTI(vector<string>& W, vector<int>& T, vector<int>& I);
 
 int main(int argc, char** argv) {
 	ifstream		fin;
@@ -42,15 +43,19 @@ int main(int argc, char** argv) {
 		updateWCI(str, W, T, I);
 	}
 
-	for(int i=0; i<W.size(); i++) {
-		cout << setw(2) << i << setw(10) << W[i];
-		cout << " Cost:" << setw(4) << getCost(i, T);
-		cout << " Index: " << I[i] << endl;
-	}
+	printWTI(W, T, I);
+
 
 	fin.close();
 	
 	return 0;
+}
+
+void printWTI(vector<string>& W, vector<int>& T, vector<int>& I) {
+	for(int i=0; i<W.size(); i++) {
+		cout<<setw(2)<<i<<":"<<setw(9)<<W[i]<<" T:"<<setw(3)<<T[i];
+		cout<<" I:"<<setw(1)<<I[i]<<endl;
+	}
 }
 
 /* Calculates T(0,i) where i is index of word added to words[] */
