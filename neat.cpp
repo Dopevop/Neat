@@ -44,7 +44,8 @@ int main(int argc, char** argv) {
 			exit(1);
 		}
 		if(argc == 3)
-			M = stoi( string(argv[2]) );
+			sscanf(argv[2], "%d", &M);
+			/* M = stoi( string(argv[2]) ); */
 	}
 
 	/* Read words and build up T, I */
