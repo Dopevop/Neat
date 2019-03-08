@@ -9,7 +9,7 @@
 
 using namespace std;
 
-int M = 10;
+int M = 60;
 
 void updateWCI(string, vector<string>&, vector<int>&, vector<int>&, bool);
 int  lineCost(int, int, vector<string> &);
@@ -18,6 +18,7 @@ void printWTI(vector<string>& W, vector<int>& T, vector<int>& I);
 
 int main(int argc, char** argv) {
 	ifstream		fin;
+	ofstream		fout;
 	string			str;
 	vector<string>	W;	
 	vector<int>		T;    // Total up to T[i], i != n
@@ -37,12 +38,16 @@ int main(int argc, char** argv) {
 			cerr << "Could not open " << argv[1] << endl;
 			exit(1);
 		}
+		fout.open("output.txt");
+		if( fin.fail() ){
+			cerr << "Could not open output" << endl;
+			exit(1);
+		}
 		if(argc == 3)
 			M = stoi( string(argv[2]) );
 	}
 
 	/* Read words and build up T, I */
-	char ch;
 	while( fin >> str ) {
 		updateWCI(str, W, T, I, false);
 	}
@@ -66,11 +71,13 @@ int main(int argc, char** argv) {
 	}
 	
 	/* print out the list of words with newlines in place */
+	fout << cost << "\n";
 	for(; lit != solution.end(); ++lit) {
-		cout<<( *lit );
+		fout<<( *lit );
 		if(*lit != "\n") 
-			cout<<" ";
+			fout<<" ";
 	}
+	fout << endl;
 
 	fin.close();
 	
