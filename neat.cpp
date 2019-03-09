@@ -1,4 +1,3 @@
-
 /************************************************************************************************/
 /* Devon O'Connor                                                                               */
 /* March 8th, 2019                                                                              */
@@ -12,19 +11,17 @@
 #include <cstdlib>
 #include <iomanip>
 #include <list>
-
 #define INF 999999999
 
 using namespace std;
-
 typedef  unsigned long long int ulli;
-
-int M = 60; 
+int	M = 60; 
 
 void updateWTI(string, vector<string>&, vector<ulli>&, vector<int>&, bool); 
 int  lineCost(int, int, vector<string> &);                                 
 int  getCost(int, vector<ulli> &);                                        
 void printWTI(vector<string>&, vector<ulli>&, vector<int>&);             
+
 int main(int argc, char** argv) {                                       
 	ifstream		fin;      
 	ofstream		fout;    
@@ -37,17 +34,18 @@ int main(int argc, char** argv) {
 
 	/* Open File if it has been passed correctly */
 	if(argc < 2 || argc > 3){                                           
+		cerr << "Error: Incorrect number of arguments!" << endl;
 		cerr << "Usage: " << argv[0] << " <file> [max width]" << endl;
 		exit(1);
 	} else {
 		fin.open(argv[1]);                                              
 		if( fin.fail() ){                                               
-			cerr << "Could not open " << argv[1] << endl;
+			cerr << "Error: Could not open " << argv[1] << endl;
 			exit(1);
 		}
 		fout.open("output.txt");                                        
 		if( fin.fail() ){                                               
-			cerr << "Could not open output" << endl;
+			cerr << "Error: Could not open output.txt" << endl;
 			exit(1);
 		}
 		if(argc == 3)                                                   
@@ -92,8 +90,7 @@ int main(int argc, char** argv) {
 	return 0;    
 }
 
-/* Prints out all WCI values for each word processed */
-/* Doesn't consider the last line pentaly-free       */
+/* Prints out all WCI values */
 void printWTI(vector<string>& W, vector<ulli>& T, vector<int>& I) {
 	for(int i=0; i<W.size(); i++) {                                  
 		cout<<setw(2)<<i<<":"<<setw(9)<<W[i]<<" T:"<<setw(3)<<T[i];
@@ -160,4 +157,3 @@ int lineCost(int i, int j, vector<string> &W){
 		return extra * extra * extra;      
 	}
 }
-
