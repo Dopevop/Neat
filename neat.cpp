@@ -19,7 +19,7 @@ using namespace std;
 
 typedef  unsigned long long int ulli;
 
-int M = 60; // O(1)
+int M = 60; 
 
 void updateWTI(string, vector<string>&, vector<ulli>&, vector<int>&, bool); 
 int  lineCost(int, int, vector<string> &);                                 
@@ -67,8 +67,8 @@ int main(int argc, char** argv) {
 	
 	/* Construct list of numbers in reverse, each number is how many words to print before a \n */
 	cost = T.back();                                
-	int nextBreak = I.back(); // O(1)
-	list<string>::iterator lit = solution.begin(); // O(1) 
+	int nextBreak = I.back(); 
+	list<string>::iterator lit = solution.begin(); 
 	for(int i = W.size()-1; i>=0; i--){             
 		lit = solution.insert(lit, W[i]);            
 		if(i == nextBreak && i != 0){               
@@ -133,7 +133,7 @@ void updateWTI(string word, vector<string>& W, vector<ulli>& T, vector<int>& I, 
 	}
 }
 
-// A wrapper function to handle costs[i] when i < 0
+/* A wrapper function to handle costs[i] when i < 0 */
 int getCost(int index, vector<ulli> &costs){ 
 	if(index < 0) {           
 		return 0;             
