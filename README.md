@@ -21,7 +21,7 @@ the path to a text file:
 ## Output
 
 The formatted solution, aligned ever so perfectly, will be
-written to a file called "output.txt" in the same directory
+written to a file called `output.txt` in the same directory
 as the program.
 
 ## Options
