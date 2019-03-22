@@ -1,4 +1,4 @@
-		Compiling
+		# Compiling
 
 To compile "neat.cpp" into the runnable "neat", use the
 command:
